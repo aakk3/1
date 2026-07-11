@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pen &amp; Paper ERP — Run Your Business From One Dashboard</title>
+<style>
+  :root{
+    --navy:#0b2a4a;
+    --blue-deep:#0f4c81;
+    --blue:#1f6fb2;
+    --blue-bright:#2f8fe0;
+    --blue-pale:#eaf3fc;
+    --blue-paler:#f4f8fc;
+    --white:#ffffff;
+    --ink:#16232f;
+    --slate:#5b6b7a;
+    --slate-light:#7d99b5;
+    --line:#d8e6f4;
+    --radius:12px;
+    --shadow: 0 8px 24px rgba(15,76,129,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.55;
+  }
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px;}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;max-width:1140px;margin:0 auto;
+  }
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-mark{
+    width:34px;height:34px;border-radius:8px;
+    background:linear-gradient(135deg,var(--blue-bright),var(--navy));
+    display:flex;align-items:center;justify-content:center;
+    color:white;flex-shrink:0;
+  }
+  .logo-mark svg{width:18px;height:18px;}
+  .logo-word{display:flex;flex-direction:column;line-height:1;}
+  .logo-word .name{font-weight:800;font-size:1.05rem;color:var(--navy);letter-spacing:-0.01em;}
+  .logo-word .tag{font-weight:600;font-size:0.62rem;color:var(--blue);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px;}
+  nav.links{display:flex;gap:32px;align-items:center;}
+  nav.links a{font-size:0.95rem;color:var(--slate);font-weight:500;transition:color 0.15s;}
+  nav.links a:hover{color:var(--blue-deep);}
+  .btn{
+    display:inline-block;padding:11px 24px;border-radius:8px;font-weight:600;
+    font-size:0.95rem;cursor:pointer;transition:all 0.15s ease;border:1px solid transparent;
+    text-align:center;font-family:inherit;
+  }
+  .btn-primary{background:var(--blue-deep);color:var(--white);}
+  .btn-primary:hover{background:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px rgba(15,76,129,0.25);}
+  .btn-outline{background:transparent;border-color:var(--blue-deep);color:var(--blue-deep);}
+  .btn-outline:hover{background:var(--blue-pale);}
+  .btn-block{display:block;width:100%;}
+
+  /* Hero */
+  .hero{
+    background:radial-gradient(1100px 480px at 85% -10%, rgba(47,143,224,0.15), transparent 60%),
+               linear-gradient(180deg, var(--blue-pale) 0%, var(--white) 65%);
+    padding:88px 24px 72px;border-bottom:1px solid var(--line);
+  }
+  .hero-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:700;
+    letter-spacing:0.06em;text-transform:uppercase;color:var(--blue-deep);background:var(--white);
+    border:1px solid var(--line);padding:6px 14px;border-radius:100px;margin-bottom:20px;box-shadow:var(--shadow);
+  }
+  .hero h1{font-size:2.7rem;line-height:1.12;color:var(--navy);margin:0 0 20px;letter-spacing:-0.02em;font-weight:800;}
+  .hero h1 span{color:var(--blue);}
+  .hero p.lead{font-size:1.1rem;color:var(--slate);max-width:520px;margin:0 0 32px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-ctas .btn{padding:14px 28px;font-size:1rem;}
+  .hero-panel{background:var(--white);border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 50px rgba(15,76,129,0.14);padding:24px;}
+  .hero-panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .hero-panel-header span{font-weight:700;color:var(--navy);font-size:0.95rem;}
+  .dot-row{display:flex;gap:6px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--line);}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .stat-card{background:var(--blue-pale);border-radius:10px;padding:16px;}
+  .stat-card .num{font-size:1.5rem;font-weight:800;color:var(--blue-deep);}
+  .stat-card .lbl{font-size:0.8rem;color:var(--slate);margin-top:2px;}
+  .bar-track{height:8px;background:var(--blue-pale);border-radius:6px;margin-top:16px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-bright));border-radius:6px;}
+
+  /* Section shared */
+  section{padding:80px 24px;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 52px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:2rem;color:var(--navy);margin:0 0 12px;letter-spacing:-0.015em;font-weight:800;}
+  .section-head p{color:var(--slate);font-size:1.05rem;}
+  .trial-badge{
+    display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+    background:var(--blue-pale);border:1px solid rgba(47,143,224,0.3);
+    padding:8px 16px;border-radius:100px;
+  }
+  .trial-badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--blue-bright);animation:pulse 2s infinite;}
+  .trial-badge span{font-size:0.875rem;font-weight:600;color:var(--blue-deep);}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+  /* Features */
+  .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1140px;margin:0 auto;}
+  .feature-card{
+    border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;background:var(--white);
+    transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--blue-bright);}
+  .feature-icon{
+    width:44px;height:44px;border-radius:10px;background:var(--blue-pale);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--blue-deep);
+  }
+  .feature-icon svg{width:22px;height:22px;}
+  .feature-card h3{font-size:1.05rem;color:var(--navy);margin:0 0 8px;font-weight:700;}
+  .feature-card p{font-size:0.9rem;color:var(--slate);}
+
+  /* Video request note */
+  .video-note{
+    display:inline-flex;align-items:center;gap:10px;margin-top:20px;
+    background:var(--white);border:1px solid var(--line);border-radius:12px;padding:12px 20px;box-shadow:var(--shadow);
+  }
+  .video-note span{font-size:0.875rem;color:var(--slate);}
+  .video-note a{font-size:0.875rem;font-weight:600;color:var(--blue-deep);text-decoration:underline;cursor:pointer;}
+  .video-note a:hover{color:var(--blue-bright);}
+
+  /* Pricing */
+  .pricing-cloud{background:var(--blue-pale);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .pricing-offline{background:var(--white);border-top:1px solid var(--line);}
+  .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:920px;margin:0 auto;}
+  .price-card{
+    background:var(--white);border-radius:16px;border:1px solid var(--line);padding:36px 32px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;
+  }
+  .price-card.highlight{border:2px solid var(--blue-deep);position:relative;}
+  .price-tag{
+    position:absolute;top:-13px;left:32px;background:var(--blue-deep);color:white;
+    font-size:0.72rem;font-weight:700;padding:5px 12px;border-radius:100px;
+    letter-spacing:0.03em;text-transform:uppercase;
+  }
+  .price-card h3{font-size:1.2rem;color:var(--navy);margin:0 0 6px;font-weight:800;}
+  .price-card .sub{color:var(--slate);font-size:0.92rem;margin-bottom:24px;}
+  .price-amount{display:flex;align-items:baseline;gap:6px;margin-bottom:6px;}
+  .price-amount .amt{font-size:2.5rem;font-weight:800;color:var(--blue-deep);}
+  .price-amount .period{color:var(--slate);font-size:0.95rem;}
+  .price-note{font-size:0.88rem;color:var(--slate);margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line);}
+  .price-note strong{color:var(--navy);}
+  .price-list{list-style:none;margin:0 0 28px;padding:0;flex-grow:1;}
+  .price-list li{display:flex;align-items:flex-start;gap:10px;font-size:0.92rem;color:var(--ink);margin-bottom:12px;}
+  .price-list li svg{flex-shrink:0;width:18px;height:18px;color:var(--blue-deep);margin-top:1px;}
+  .price-card .btn{width:100%;}
+
+  /* Contact Section */
+  .contact-section{background:var(--navy);padding:80px 24px;}
+  .contact-inner{max-width:960px;margin:0 auto;}
+  .contact-section .eyebrow{color:var(--blue-bright);background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);}
+  .contact-section h2{color:white;}
+  .contact-section .section-head p{color:#9db8d1;max-width:560px;margin-left:auto;margin-right:auto;}
+  .version-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;}
+  .version-card{
+    text-align:left;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px;padding:28px;cursor:pointer;transition:background 0.15s;font-family:inherit;color:inherit;
+  }
+  .version-card:hover{background:rgba(255,255,255,0.10);}
+  .version-card svg.icon{width:40px;height:40px;color:var(--blue-bright);margin-bottom:16px;}
+  .version-card h3{color:white;font-weight:700;font-size:1.125rem;margin-bottom:4px;}
+  .version-card p{color:#9db8d1;font-size:0.875rem;margin-bottom:16px;}
+  .version-card .link{display:inline-flex;align-items:center;gap:6px;color:var(--blue-bright);font-weight:600;font-size:0.875rem;}
+  .version-card .link svg{width:16px;height:16px;transition:transform 0.15s;}
+  .version-card:hover .link svg{transform:translateX(4px);}
+  .follow-up{text-align:center;}
+  .follow-up button{
+    display:inline-flex;align-items:center;gap:8px;background:none;border:none;
+    color:#9db8d1;font-size:0.875rem;font-weight:500;cursor:pointer;transition:color 0.15s;font-family:inherit;
+  }
+  .follow-up button:hover{color:white;}
+  .follow-up svg{width:16px;height:16px;}
+
+  /* Footer */
+  footer{background:var(--navy);color:#c9dcef;padding:48px 24px 28px;}
+  .footer-inner{max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,0.12);}
+  .footer-logo{display:flex;align-items:center;gap:10px;color:white;font-weight:700;font-size:1.1rem;margin-bottom:10px;}
+  .footer-inner p{max-width:320px;color:#9db8d1;font-size:0.9rem;}
+  .footer-cols{display:flex;gap:56px;flex-wrap:wrap;}
+  .footer-col h4{color:white;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 14px;font-weight:700;}
+  .footer-col a{display:block;color:#9db8d1;font-size:0.9rem;margin-bottom:10px;transition:color 0.15s;cursor:pointer;}
+  .footer-col a:hover{color:white;}
+  .footer-bottom{max-width:1140px;margin:0 auto;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.82rem;color:#7d99b5;}
+
+  /* Chat Widget */
+  .chat-toggle{
+    position:fixed;bottom:24px;right:24px;z-index:50;width:56px;height:56px;border-radius:50%;
+    background:var(--blue-deep);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 20px rgba(15,76,129,0.3);transition:all 0.2s;
+  }
+  .chat-toggle:hover{background:var(--navy);transform:scale(1.05);}
+  .chat-toggle svg{width:24px;height:24px;}
+  .chat-panel{
+    position:fixed;bottom:24px;right:24px;z-index:50;width:340px;max-width:calc(100vw - 48px);
+    background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.2);border:1px solid var(--line);
+    overflow:hidden;display:none;flex-direction:column;max-height:calc(100vh - 48px);
+  }
+  .chat-panel.open{display:flex;}
+  .chat-header{background:var(--blue-deep);color:white;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .chat-header .title{font-weight:700;font-size:0.95rem;}
+  .chat-header .sub{font-size:0.75rem;color:#c9dcef;}
+  .chat-header button{background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;}
+  .chat-header button:hover{color:white;}
+  .chat-header svg{width:20px;height:20px;}
+  .chat-form{padding:20px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;}
+  .chat-form input,.chat-form textarea{
+    width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--line);font-size:0.875rem;
+    font-family:inherit;outline:none;transition:border-color 0.15s;
+  }
+  .chat-form input:focus,.chat-form textarea:focus{border-color:var(--blue-bright);}
+  .chat-form textarea{resize:none;}
+  .chat-success{background:var(--blue-pale);color:var(--blue-deep);font-size:0.85rem;border-radius:8px;padding:8px 12px;font-weight:500;}
+
+  /* Secret pixel */
+  .secret-pixel{position:fixed;top:0;right:0;z-index:60;width:8px;height:8px;background:transparent;border:none;cursor:default;}
+
+  /* Modals */
+  .modal-overlay{position:fixed;inset:0;z-index:75;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);padding:16px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:white;border-radius:16px;width:440px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .modal-header{background:var(--blue-deep);color:white;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+  .modal-header h3{font-weight:700;font-size:1.125rem;}
+  .modal-header .sub{font-size:0.75rem;color:#c9dcef;}
+  .modal-header button{background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;}
+  .modal-header button:hover{color:white;}
+  .modal-header svg{width:20px;height:20px;}
+  .modal-body{padding:24px;}
+  .form-group{margin-bottom:12px;}
+  .form-group label{display:block;font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:4px;}
+  .form-group input,.form-group textarea,.form-group select{
+    width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--line);font-size:0.875rem;
+    font-family:inherit;outline:none;transition:border-color 0.15s;
+  }
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--blue-bright);}
+  .form-group textarea{resize:none;}
+  .version-toggle{display:flex;gap:8px;}
+  .version-toggle button{
+    flex:1;padding:8px;border-radius:8px;font-size:0.875rem;font-weight:600;border:1px solid var(--line);
+    background:transparent;color:var(--slate);cursor:pointer;transition:all 0.15s;font-family:inherit;
+  }
+  .version-toggle button.active{background:var(--blue-deep);color:white;border-color:var(--blue-deep);}
+  .modal-error{background:#fef2f2;color:#dc2626;font-size:0.875rem;border-radius:8px;padding:8px 12px;margin-bottom:12px;}
+  .modal-success{text-align:center;padding:24px;}
+  .modal-success .icon-circle{width:56px;height:56px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+  .modal-success .icon-circle svg{width:28px;height:28px;color:var(--blue-deep);}
+  .modal-success h4{font-weight:700;color:var(--navy);font-size:1.125rem;margin-bottom:8px;}
+  .modal-success p{color:var(--slate);font-size:0.875rem;margin-bottom:8px;}
+  .modal-success .ref-id{font-size:0.75rem;color:var(--slate-light);margin-bottom:20px;}
+  .modal-success .ref-id span{font-family:monospace;font-weight:600;color:var(--navy);}
+  .search-row{display:flex;gap:8px;}
+  .search-row input{flex:1;}
+  .search-row button{
+    background:var(--blue-deep);color:white;border:none;padding:8px 16px;border-radius:8px;
+    font-weight:600;font-size:0.875rem;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;
+  }
+  .search-row button:hover{background:var(--navy);}
+  .search-row svg{width:16px;height:16px;}
+  .inquiry-list{display:flex;flex-direction:column;gap:12px;}
+  .inquiry-item{border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .inquiry-item .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .inquiry-item .name{font-weight:700;color:var(--navy);font-size:0.875rem;}
+  .inquiry-item .status{font-size:0.75rem;font-weight:600;padding:2px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:0.03em;}
+  .status-new{color:var(--blue-bright);background:var(--blue-pale);}
+  .status-contacted{color:#b45309;background:#fffbeb;}
+  .status-resolved{color:#15803d;background:#f0fdf4;}
+  .inquiry-item .meta{font-size:0.75rem;color:var(--slate);margin-bottom:4px;}
+  .inquiry-item .meta strong{color:var(--navy);}
+  .inquiry-item .msg{font-size:0.875rem;color:var(--ink);}
+  .inquiry-item .reply{margin-top:12px;background:var(--blue-pale);border-radius:8px;padding:12px;font-size:0.875rem;}
+  .inquiry-item .reply .label{font-size:0.75rem;font-weight:600;color:var(--blue-deep);margin-bottom:4px;}
+  .empty-state{text-align:center;padding:32px;color:var(--slate);}
+  .empty-state svg{width:40px;height:40px;margin:0 auto 8px;color:var(--line);}
+
+  /* Support Dashboard */
+  .support-dashboard{position:fixed;inset:0;z-index:80;background:var(--blue-paler);display:none;flex-direction:column;}
+  .support-dashboard.open{display:flex;}
+  .sd-header{background:var(--navy);color:white;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .sd-header .left{display:flex;align-items:center;gap:12px;}
+  .sd-header svg{width:24px;height:24px;color:var(--blue-bright);}
+  .sd-header h2{font-weight:700;font-size:1.125rem;line-height:1.2;}
+  .sd-header .sub{font-size:0.75rem;color:#9db8d1;}
+  .sd-header .right{display:flex;align-items:center;gap:12px;}
+  .sd-header .count{font-size:0.875rem;color:#9db8d1;}
+  .sd-header .icon-btn{background:none;border:none;color:#9db8d1;cursor:pointer;padding:4px;}
+  .sd-header .icon-btn:hover{color:white;}
+  .sd-header .icon-btn svg{width:20px;height:20px;color:inherit;}
+  .sd-body{flex:1;overflow-y:auto;padding:24px;}
+  .sd-inner{max-width:960px;margin:0 auto;}
+  .sd-loading,.sd-error,.sd-empty{text-align:center;padding:80px;color:var(--slate);}
+  .sd-error{color:#dc2626;}
+  .sd-empty svg{width:48px;height:48px;margin:0 auto:12px;color:var(--line);}
+  .msg-list{display:flex;flex-direction:column;gap:16px;}
+  .msg-card{background:white;border-radius:12px;border:1px solid var(--line);padding:20px;box-shadow:var(--shadow);}
+  .msg-card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;}
+  .msg-card .name{font-weight:700;color:var(--navy);}
+  .msg-card .email{font-size:0.75rem;color:var(--slate);display:inline-flex;align-items:center;gap:4px;}
+  .msg-card .email svg{width:12px;height:12px;}
+  .msg-card .time{font-size:0.75rem;color:var(--slate-light);display:flex;align-items:center;gap:4px;margin-top:2px;}
+  .msg-card .time svg{width:12px;height:12px;}
+  .msg-card .badges{display:flex;align-items:center;gap:6px;}
+  .msg-card .status-badge{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:600;}
+  .msg-card .status-badge svg{width:12px;height:12px;}
+  .msg-card .text{font-size:0.875rem;color:var(--ink);margin-bottom:12px;}
+  .msg-card .reply-box{margin-top:12px;}
+  .msg-card .reply-textarea{width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--line);font-size:0.875rem;font-family:inherit;outline:none;resize:none;transition:border-color 0.15s;margin-bottom:8px;}
+  .msg-card .reply-textarea:focus{border-color:var(--blue-bright);}
+  .msg-card .reply-actions{display:flex;gap:8px;}
+  .msg-card .reply-actions .btn{padding:8px 16px;font-size:0.875rem;}
+  .msg-card .reply-link{display:inline-flex;align-items:center;gap:6px;font-size:0.875rem;font-weight:600;color:var(--blue-deep);cursor:pointer;transition:color 0.15s;background:none;border:none;font-family:inherit;}
+  .msg-card .reply-link:hover{color:var(--blue-bright);}
+  .msg-card .reply-link svg{width:16px;height:16px;}
+  .msg-card .existing-reply{margin-top:8px;background:var(--blue-pale);border-radius:8px;padding:12px;font-size:0.875rem;}
+  .msg-card .existing-reply .label{font-size:0.75rem;font-weight:600;color:var(--blue-deep);margin-bottom:4px;}
+  .msg-card .no-email{font-size:0.75rem;color:var(--slate-light);font-style:italic;margin-top:8px;}
+
+  /* Code prompt */
+  .code-prompt{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);}
+  .code-prompt.open{display:flex;}
+  .code-form{background:white;border-radius:12px;padding:24px;width:360px;max-width:calc(100vw - 32px);box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+  .code-form h3{font-weight:700;color:var(--navy);font-size:1.125rem;margin-bottom:4px;}
+  .code-form p{color:var(--slate);font-size:0.875rem;margin-bottom:16px;}
+  .code-form input{
+    width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--line);font-size:0.875rem;
+    margin-bottom:8px;outline:none;font-family:inherit;
+  }
+  .code-form input:focus{border-color:var(--blue-bright);}
+  .code-form .error{color:#dc2626;font-size:0.75rem;margin-bottom:8px;}
+  .code-form button{
+    width:100%;background:var(--blue-deep);color:white;padding:10px;border-radius:8px;
+    font-weight:600;font-size:0.875rem;border:none;cursor:pointer;font-family:inherit;
+  }
+  .code-form button:hover{background:var(--navy);}
+
+  /* Responsive */
+  @media (max-width:860px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero h1{font-size:2.1rem;}
+    .feature-grid{grid-template-columns:repeat(2,1fr);}
+    .pricing-grid{grid-template-columns:1fr;}
+    .version-grid{grid-template-columns:1fr;}
+    nav.links{display:none;}
+  }
+  @media (max-width:480px){
+    .feature-grid{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="nav">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <div class="logo-word">
+        <span class="name">Pen &amp; Paper</span>
+        <span class="tag">ERP</span>
+      </div>
+    </div>
+    <nav class="links">
+      <a href="#cloud-features">Features</a>
+      <a href="#cloud-pricing">Pricing</a>
+      <a href="#offline-features">Offline</a>
+    </nav>
+    <button class="btn btn-primary" onclick="openInquiry('cloud')">Log In</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Built for restaurants &amp; retail teams</div>
+      <h1>Run your <span>front line and back office</span> from one system.</h1>
+      <p class="lead">Pen &amp; Paper ERP connects your cashier, kitchen, inventory, and management teams in a single platform — so every shift runs on the same real-time data.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="openInquiry('cloud')">Start Free Trial</button>
+        <a class="btn btn-outline" href="#cloud-pricing">View Pricing</a>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <div class="hero-panel-header">
+        <span>Today's Overview</span>
+        <div class="dot-row"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">128</div><div class="lbl">Orders Today</div></div>
+        <div class="stat-card"><div class="num">96%</div><div class="lbl">On-Time Prep</div></div>
+        <div class="stat-card"><div class="num">14</div><div class="lbl">Staff on Shift</div></div>
+        <div class="stat-card"><div class="num">3</div><div class="lbl">Low Stock Alerts</div></div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:72%;"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOUD FEATURES -->
+<section id="cloud-features" style="background:var(--white);">
+  <div class="section-head">
+    <div class="eyebrow">Cloud Version</div>
+    <h2>Everything your team already relies on</h2>
+    <p>Every module below is live and included in your cloud plan today.</p>
+    <div class="trial-badge"><div class="pulse"></div><span>14-day free trial — no credit card required</span></div>
+  </div>
+  <div class="feature-grid" id="cloud-feature-grid"></div>
+</section>
+
+<!-- CLOUD PRICING -->
+<section id="cloud-pricing" class="pricing-cloud">
+  <div class="section-head">
+    <div class="eyebrow">Cloud Pricing</div>
+    <h2>Simple, per-role pricing</h2>
+    <p>Pick what your team needs. Add users any time as you grow.</p>
+    <div class="trial-badge"><div class="pulse"></div><span>14-day free trial — no credit card required</span></div>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card highlight">
+      <div class="price-tag">Front of House</div>
+      <h3>POS &amp; Kitchen</h3>
+      <div class="sub">Cashier and Kitchen Display access</div>
+      <div class="price-amount"><span class="amt">$64.99</span><span class="period">/ month</span></div>
+      <div class="price-note">Includes <strong>2 users</strong>. Each additional user is <strong>$9.99</strong>.</div>
+      <ul class="price-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> POS (Cashier)</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kitchen Display</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Inventory Management</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Shift Scheduling &amp; Attendance</li>
+      </ul>
+      <button class="btn btn-primary" onclick="openInquiry('cloud')">Start Free Trial</button>
+    </div>
+    <div class="price-card">
+      <h3>Manager &amp; Admin</h3>
+      <div class="sub">Dashboard, reporting, and oversight access</div>
+      <div class="price-amount"><span class="amt">1 Included</span></div>
+      <div class="price-note">1 manager/admin user included. Each additional user is <strong>$14.99</strong>.</div>
+      <ul class="price-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Manager Dashboard</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Analytics &amp; Reporting</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Audit Logs</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Employee of the Month Ranking</li>
+      </ul>
+      <button class="btn btn-outline" onclick="openInquiry('cloud')">Start Free Trial</button>
+    </div>
+  </div>
+</section>
+
+<!-- OFFLINE FEATURES -->
+<section id="offline-features" style="background:var(--blue-paler);border-top:1px solid var(--line);">
+  <div class="section-head">
+    <div class="eyebrow">Offline Version</div>
+    <h2>A self-hosted system with the same power</h2>
+    <p>Every module below is included in the offline license — no recurring fees, unlimited users.</p>
+    <div class="video-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--blue-deep);flex-shrink:0;"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      <span>Want to see it in action?</span>
+      <a onclick="openInquiry('offline')">Request an explainer video →</a>
+    </div>
+  </div>
+  <div class="feature-grid" id="offline-feature-grid"></div>
+</section>
+
+<!-- OFFLINE PRICING -->
+<section id="offline-pricing" class="pricing-offline">
+  <div class="section-head">
+    <div class="eyebrow" style="background:var(--blue-pale);">Offline Pricing</div>
+    <h2>One license. Unlimited users.</h2>
+    <p>Pay once per restaurant. Submit an inquiry and we'll confirm pricing, licensing, and installation details.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card highlight">
+      <div class="price-tag">Single Location</div>
+      <h3>Single Restaurant</h3>
+      <div class="sub">Covers 1 restaurant with a one-time perpetual license.</div>
+      <div class="price-amount"><span class="amt">$149.99</span><span class="period">one-time</span></div>
+      <div class="price-note">One-time payment. No recurring fees.</div>
+      <ul class="price-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Covers 1 restaurant</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Includes Moderator access</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Unlimited users / employees</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> One-time license for the restaurant</li>
+      </ul>
+      <button class="btn btn-primary" onclick="openInquiry('offline')">Submit Inquiry</button>
+    </div>
+    <div class="price-card">
+      <h3>Additional Restaurant</h3>
+      <div class="sub">Add locations as you grow — same features, same one-time model.</div>
+      <div class="price-amount"><span class="amt">$99.99</span><span class="period">per restaurant</span></div>
+      <div class="price-note">One-time payment. No recurring fees.</div>
+      <ul class="price-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Same features as the main license</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Unlimited users for each additional restaurant</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> One-time license per location</li>
+      </ul>
+      <button class="btn btn-outline" onclick="openInquiry('offline')">Submit Inquiry</button>
+    </div>
+  </div>
+</section>
+
+<!-- CHOOSE VERSION / CONTACT -->
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="section-head">
+      <div class="eyebrow">Get Started</div>
+      <h2>Choose Your Version</h2>
+      <p>Not sure which version fits? Submit an inquiry and we'll guide you through pricing, licensing, and setup.</p>
+    </div>
+    <div class="version-grid">
+      <button class="version-card" onclick="openInquiry('cloud')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0 0-9h-1.8A7 7 0 1 0 4 14.9"/><line x1="12" y1="12" x2="12" y2="20"/></svg>
+        <h3>Cloud Version</h3>
+        <p>Hosted, always up-to-date, accessible from anywhere. Monthly per-role pricing. 14-day free trial.</p>
+        <span class="link">Submit Inquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </button>
+      <button class="version-card" onclick="openInquiry('offline')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        <h3>Offline Version</h3>
+        <p>Self-hosted, one-time license, unlimited users. Perfect for single or multi-location restaurants.</p>
+        <span class="link">Submit Inquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </button>
+    </div>
+    <div class="follow-up">
+      <button onclick="openFollowUp()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Follow up on your inquiry
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        Pen &amp; Paper ERP
+      </div>
+      <p>One system for cashiers, kitchens, inventory, and management — built to run your daily operations.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#cloud-features">Features</a>
+        <a href="#cloud-pricing">Cloud Pricing</a>
+        <a href="#offline-pricing">Offline Pricing</a>
+        <a onclick="openInquiry('cloud')">Start Free Trial</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="openInquiry('cloud')">Contact</a>
+        <a onclick="openFollowUp()">Support</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Pen &amp; Paper ERP. All rights reserved.</span>
+    <span>Blue &amp; white. Built for the floor and the back office.</span>
+  </div>
+</footer>
+
+<!-- CHAT WIDGET -->
+<button class="chat-toggle" id="chatToggle" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div><div class="title">Support Chat</div><div class="sub">We typically reply within an hour</div></div>
+    <button onclick="toggleChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <form class="chat-form" onsubmit="sendChat(event)">
+    <div id="chatSuccess" class="chat-success" style="display:none;">Thanks! Your message has been sent to our team.</div>
+    <input type="text" id="chatName" placeholder="Your name" />
+    <input type="email" id="chatEmail" placeholder="Email (optional)" />
+    <textarea id="chatMessage" rows="3" placeholder="How can we help?"></textarea>
+    <button type="submit" class="btn btn-primary" id="chatSendBtn">Send Message</button>
+  </form>
+</div>
+
+<!-- SECRET PIXEL -->
+<button class="secret-pixel" onclick="showCodePrompt()"></button>
+
+<!-- CODE PROMPT -->
+<div class="code-prompt" id="codePrompt">
+  <form class="code-form" onsubmit="checkCode(event)">
+    <h3>Access Code</h3>
+    <p>Enter the access code to continue.</p>
+    <input type="password" id="codeInput" placeholder="Enter code" />
+    <div class="error" id="codeError" style="display:none;">Incorrect code. Try again.</div>
+    <button type="submit">Unlock</button>
+  </form>
+</div>
+
+<!-- SUPPORT DASHBOARD -->
+<div class="support-dashboard" id="supportDashboard">
+  <div class="sd-header">
+    <div class="left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+      <div><h2>Support Dashboard</h2><div class="sub">All visitor messages</div></div>
+    </div>
+    <div class="right">
+      <span class="count" id="sdCount"></span>
+      <button class="icon-btn" onclick="loadSdMessages()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+      <button class="icon-btn" onclick="closeSupportDashboard()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+  <div class="sd-body">
+    <div class="sd-inner">
+      <div id="sdContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- INQUIRY FORM MODAL -->
+<div class="modal-overlay" id="inquiryModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><h3>Inquiry Form</h3><div class="sub">We'll get back to you with pricing &amp; licensing details</div></div>
+      <button onclick="closeInquiry()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="inquiryBody"></div>
+  </div>
+</div>
+
+<!-- FOLLOW-UP MODAL -->
+<div class="modal-overlay" id="followUpModal">
+  <div class="modal" style="width:480px;">
+    <div class="modal-header">
+      <div><h3>Follow Up on Your Inquiry</h3><div class="sub">Enter your email to check the status</div></div>
+      <button onclick="closeFollowUp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="search-row">
+          <input type="email" id="followUpEmail" placeholder="you@example.com" />
+          <button onclick="searchInquiries()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Search</button>
+        </div>
+      </div>
+      <div id="followUpResults"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+var STORAGE_KEY_CHAT = 'pen_paper_chat_messages';
+var STORAGE_KEY_INQUIRY = 'pen_paper_inquiries';
+var SECRET_CODE = '0EFGHTMNGAFPDJEFUHEFHV#%6475HNV8JMV,VIGHFNFJCM!@#$%^&*(DBEGCVET';
+
+var cloudFeatures = [
+  {icon:'credit-card',title:'POS (Cashier)',desc:'Fast, reliable checkout built for high-volume counters and busy service.'},
+  {icon:'monitor',title:'Kitchen Display',desc:'Orders route straight from the counter to the kitchen screen in real time.'},
+  {icon:'package',title:'Inventory Management',desc:'Track stock levels and get ahead of shortages before they hit the floor.'},
+  {icon:'bar-chart',title:'Analytics & Reporting',desc:'Sales, labor, and performance reports that update as your day happens.'},
+  {icon:'scroll',title:'Audit Logs',desc:'A clear, timestamped record of every action taken across your system.'},
+  {icon:'dashboard',title:'Manager Dashboard',desc:'One screen for managers to oversee every location, shift, and team.'},
+  {icon:'calendar',title:'Shift Scheduling & Attendance',desc:'Build schedules and track clock-ins without leaving the platform.'},
+  {icon:'award',title:'Employee of the Month Ranking',desc:'Automatic performance rankings that keep your team motivated.'}
+];
+
+var offlineFeatures = [
+  {icon:'credit-card',title:'POS (Cashier)',desc:'Fast, reliable checkout built for high-volume counters and busy service.'},
+  {icon:'monitor',title:'Kitchen Display',desc:'Orders route straight from the counter to the kitchen screen in real time.'},
+  {icon:'package',title:'Inventory Management',desc:'Track stock levels and get ahead of shortages before they hit the floor.'},
+  {icon:'bar-chart',title:'Analytics & Reporting',desc:'Sales, labor, and performance reports that update as your day happens.'},
+  {icon:'scroll',title:'Audit Logs',desc:'A clear, timestamped record of every action taken across your system.'},
+  {icon:'dashboard',title:'Manager Dashboard',desc:'One screen for managers to oversee every location, shift, and team.'},
+  {icon:'calendar',title:'Shift Scheduling & Attendance',desc:'Build schedules and track clock-ins without leaving the platform.'},
+  {icon:'award',title:'Employee Performance Ranking',desc:'Automatic performance rankings that help keep teams motivated.'}
+];
+
+var iconSvgs = {
+  'credit-card':'<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>',
+  'monitor':'<rect x="3" y="4" width="18" height="12" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/>',
+  'package':'<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/>',
+  'bar-chart':'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+  'scroll':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/>',
+  'dashboard':'<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',
+  'calendar':'<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+  'award':'<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>'
+};
+
+/* ============ RENDER FEATURES ============ */
+function renderFeatures(gridId, features) {
+  var grid = document.getElementById(gridId);
+  var html = '';
+  features.forEach(function(f) {
+    html += '<div class="feature-card">' +
+      '<div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + iconSvgs[f.icon] + '</svg></div>' +
+      '<h3>' + f.title + '</h3><p>' + f.desc + '</p></div>';
+  });
+  grid.innerHTML = html;
+}
+renderFeatures('cloud-feature-grid', cloudFeatures);
+renderFeatures('offline-feature-grid', offlineFeatures);
+
+/* ============ CHAT WIDGET ============ */
+function toggleChat() {
+  var panel = document.getElementById('chatPanel');
+  var toggle = document.getElementById('chatToggle');
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    toggle.style.display = 'flex';
+  } else {
+    panel.classList.add('open');
+    toggle.style.display = 'none';
+  }
+}
+
+function sendChat(e) {
+  e.preventDefault();
+  var name = document.getElementById('chatName').value.trim() || 'Anonymous';
+  var email = document.getElementById('chatEmail').value.trim();
+  var message = document.getElementById('chatMessage').value.trim();
+  if (!message) return;
+  var btn = document.getElementById('chatSendBtn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  setTimeout(function() {
+    var msg = {
+      id: 'msg_' + Date.now(),
+      visitor_name: name,
+      visitor_email: email,
+      message: message,
+      created_date: new Date().toISOString(),
+      status: 'unread',
+      source: 'offline'
+    };
+    var existing = JSON.parse(localStorage.getItem(STORAGE_KEY_CHAT) || '[]');
+    existing.push(msg);
+    localStorage.setItem(STORAGE_KEY_CHAT, JSON.stringify(existing));
+    document.getElementById('chatSuccess').style.display = 'block';
+    document.getElementById('chatMessage').value = '';
+    btn.textContent = 'Send Message';
+    btn.disabled = false;
+    setTimeout(function() {
+      document.getElementById('chatSuccess').style.display = 'none';
+    }, 4000);
+  }, 300);
+}
+
+/* ============ SECRET PIXEL + DASHBOARD ============ */
+function showCodePrompt() {
+  document.getElementById('codePrompt').classList.add('open');
+  document.getElementById('codeInput').value = '';
+  document.getElementById('codeError').style.display = 'none';
+  document.getElementById('codeInput').focus();
+}
+
+function checkCode(e) {
+  e.preventDefault();
+  var code = document.getElementById('codeInput').value;
+  if (code === SECRET_CODE) {
+    document.getElementById('codePrompt').classList.remove('open');
+    document.getElementById('supportDashboard').classList.add('open');
+    loadSdMessages();
+  } else {
+    document.getElementById('codeError').style.display = 'block';
+  }
+}
+
+function loadSdMessages() {
+  var content = document.getElementById('sdContent');
+  var countEl = document.getElementById('sdCount');
+  var messages = [];
+  try {
+    var local = JSON.parse(localStorage.getItem(STORAGE_KEY_CHAT) || '[]');
+    messages = local.slice().reverse();
+  } catch(e) { messages = []; }
+  countEl.textContent = messages.length + ' message' + (messages.length !== 1 ? 's' : '');
+  if (messages.length === 0) {
+    content.innerHTML = '<div class="sd-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><p>No visitor messages yet.</p></div>';
+    return;
+  }
+  var html = '<div class="msg-list">';
+  messages.forEach(function(m) {
+    var status = m.status || 'unread';
+    var statusIcon, statusLabel, statusColor;
+    if (status === 'replied') {
+      statusIcon = '<polyline points="9 17 4 12 7 9"/>';
+      statusLabel = 'Replied';
+      statusColor = 'color:#16a34a;';
+    } else if (status === 'read') {
+      statusIcon = '<polyline points="20 6 9 17 4 12"/>';
+      statusLabel = 'Read';
+      statusColor = 'color:#16a34a;';
+    } else {
+      statusIcon = '<circle cx="12" cy="12" r="10"/>';
+      statusLabel = 'Unread';
+      statusColor = 'color:var(--blue-bright);';
+    }
+    var emailHtml = m.visitor_email ? '<span class="email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>' + m.visitor_email + '</span>' : '';
+    var dateStr = m.created_date ? new Date(m.created_date).toLocaleString() : '—';
+    var cardId = 'msg-card-' + m.id;
+    var replyHtml = '';
+    if (m.reply) {
+      replyHtml = '<div class="existing-reply"><div class="label">Your reply:</div><p>' + m.reply + '</p></div>';
+    } else if (m.visitor_email) {
+      replyHtml = '<div class="reply-box" id="reply-' + m.id + '">' +
+        '<button class="reply-link" onclick="showReplyBox(\'' + m.id + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 7 9"/><path d="M20 7L9 18l-5-5"/></svg> Reply by email</button>' +
+      '</div>';
+    } else {
+      replyHtml = '<p class="no-email">No email provided — cannot reply.</p>';
+    }
+    html += '<div class="msg-card" id="' + cardId + '"><div class="top"><div>' +
+      '<span class="name">' + (m.visitor_name || 'Anonymous') + '</span> ' + emailHtml +
+      '<div class="time"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + dateStr + '</div>' +
+      '</div><div class="badges">' +
+      '<span class="status-badge" style="' + statusColor + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + statusIcon + '</svg>' + statusLabel + '</span>' +
+      '</div></div><p class="text">' + m.message + '</p>' + replyHtml + '</div>';
+  });
+  html += '</div>';
+  content.innerHTML = html;
+}
+
+function showReplyBox(msgId) {
+  var box = document.getElementById('reply-' + msgId);
+  if (!box) return;
+  box.innerHTML =
+    '<textarea class="reply-textarea" id="reply-text-' + msgId + '" rows="2" placeholder="Type your reply..." autofocus></textarea>' +
+    '<div class="reply-actions">' +
+      '<button class="btn btn-primary" onclick="sendReply(\'' + msgId + '\')">Send Reply</button>' +
+      '<button class="btn btn-outline" onclick="cancelReply(\'' + msgId + '\')">Cancel</button>' +
+    '</div>';
+  var ta = document.getElementById('reply-text-' + msgId);
+  if (ta) ta.focus();
+}
+
+function cancelReply(msgId) {
+  var box = document.getElementById('reply-' + msgId);
+  if (!box) return;
+  box.innerHTML = '<button class="reply-link" onclick="showReplyBox(\'' + msgId + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 7 9"/><path d="M20 7L9 18l-5-5"/></svg> Reply by email</button>';
+}
+
+function sendReply(msgId) {
+  var text = document.getElementById('reply-text-' + msgId);
+  if (!text || !text.value.trim()) return;
+  var replyText = text.value.trim();
+  var local = JSON.parse(localStorage.getItem(STORAGE_KEY_CHAT) || '[]');
+  var msg = local.find(function(m) { return m.id === msgId; });
+  if (!msg) return;
+  msg.status = 'replied';
+  msg.reply = replyText;
+  localStorage.setItem(STORAGE_KEY_CHAT, JSON.stringify(local));
+  window.location.href = 'mailto:' + encodeURIComponent(msg.visitor_email) + '?subject=' + encodeURIComponent('Reply from Pen & Paper ERP Support') + '&body=' + encodeURIComponent('Hi ' + (msg.visitor_name || 'there') + ',\n\n' + replyText + '\n\n— Pen & Paper ERP Support Team');
+  loadSdMessages();
+}
+
+function closeSupportDashboard() {
+  document.getElementById('supportDashboard').classList.remove('open');
+}
+
+/* ============ INQUIRY FORM ============ */
+var inquiryVersion = 'offline';
+
+function openInquiry(version) {
+  inquiryVersion = version;
+  renderInquiryForm();
+  document.getElementById('inquiryModal').classList.add('open');
+}
+
+function closeInquiry() {
+  document.getElementById('inquiryModal').classList.remove('open');
+}
+
+function renderInquiryForm() {
+  document.getElementById('inquiryBody').innerHTML =
+    '<form class="modal-body" onsubmit="submitInquiry(event)">' +
+      '<div id="inquiryError" class="modal-error" style="display:none;"></div>' +
+      '<div class="form-group"><label>Full Name *</label><input type="text" id="inqName" required /></div>' +
+      '<div class="form-group"><label>Business Name</label><input type="text" id="inqBusiness" /></div>' +
+      '<div class="form-group"><label>Email Address *</label><input type="email" id="inqEmail" required /></div>' +
+      '<div class="form-group"><label>Phone Number</label><input type="text" id="inqPhone" /></div>' +
+      '<div class="form-group"><label>Version of Interest *</label>' +
+        '<div class="version-toggle">' +
+          '<button type="button" id="vCloud" onclick="setInquiryVersion(\'cloud\')">Cloud</button>' +
+          '<button type="button" id="vOffline" onclick="setInquiryVersion(\'offline\')">Offline</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="form-group"><label>Message / Requirements *</label><textarea id="inqMessage" rows="3" required></textarea></div>' +
+      '<button type="submit" class="btn btn-primary btn-block" id="inqSubmitBtn">Submit Inquiry</button>' +
+    '</form>';
+  setInquiryVersion(inquiryVersion);
+}
+
+function setInquiryVersion(v) {
+  inquiryVersion = v;
+  var cloudBtn = document.getElementById('vCloud');
+  var offlineBtn = document.getElementById('vOffline');
+  if (!cloudBtn || !offlineBtn) return;
+  cloudBtn.classList.toggle('active', v === 'cloud');
+  offlineBtn.classList.toggle('active', v === 'offline');
+}
+
+function submitInquiry(e) {
+  e.preventDefault();
+  var name = document.getElementById('inqName').value.trim();
+  var business = document.getElementById('inqBusiness').value.trim();
+  var email = document.getElementById('inqEmail').value.trim();
+  var phone = document.getElementById('inqPhone').value.trim();
+  var message = document.getElementById('inqMessage').value.trim();
+  if (!name || !email || !message) return;
+  var btn = document.getElementById('inqSubmitBtn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+  setTimeout(function() {
+    var id = 'inq_' + Date.now();
+    var inquiry = {
+      id: id,
+      full_name: name,
+      business_name: business,
+      email: email,
+      phone: phone,
+      version_of_interest: inquiryVersion,
+      message: message,
+      status: 'new',
+      admin_reply: '',
+      created_date: new Date().toISOString()
+    };
+    var existing = JSON.parse(localStorage.getItem(STORAGE_KEY_INQUIRY) || '[]');
+    existing.push(inquiry);
+    localStorage.setItem(STORAGE_KEY_INQUIRY, JSON.stringify(existing));
+    showInquirySuccess(name, inquiryVersion, id);
+  }, 300);
+}
+
+function showInquirySuccess(name, version, id) {
+  var versionLabel = version === 'offline' ? 'Offline' : 'Cloud';
+  document.getElementById('inquiryBody').innerHTML =
+    '<div class="modal-body modal-success">' +
+      '<div class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>' +
+      '<h4>Inquiry Submitted!</h4>' +
+      '<p>Thank you, ' + name + '. We\'ve received your inquiry about the <strong style="color:var(--navy);">' + versionLabel + '</strong> version.</p>' +
+      '<p>Our team will contact you shortly with pricing confirmation, licensing details, installation info, and next steps.</p>' +
+      '<p class="ref-id">Reference ID: <span>' + id + '</span></p>' +
+      '<button class="btn btn-primary" onclick="closeInquiry()">Close</button>' +
+    '</div>';
+}
+
+/* ============ FOLLOW-UP ============ */
+function openFollowUp() {
+  document.getElementById('followUpEmail').value = '';
+  document.getElementById('followUpResults').innerHTML = '';
+  document.getElementById('followUpModal').classList.add('open');
+}
+
+function closeFollowUp() {
+  document.getElementById('followUpModal').classList.remove('open');
+}
+
+function searchInquiries() {
+  var email = document.getElementById('followUpEmail').value.trim();
+  if (!email) return;
+  var results = document.getElementById('followUpResults');
+  var inquiries = [];
+  try {
+    var all = JSON.parse(localStorage.getItem(STORAGE_KEY_INQUIRY) || '[]');
+    inquiries = all.filter(function(i) { return i.email.toLowerCase() === email.toLowerCase(); }).reverse();
+  } catch(e) { inquiries = []; }
+  if (inquiries.length === 0) {
+    results.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><p>No inquiries found for this email.</p></div>';
+    return;
+  }
+  var html = '<div class="inquiry-list">';
+  inquiries.forEach(function(inq) {
+    var statusClass = 'status-' + (inq.status || 'new');
+    var dateStr = inq.created_date ? new Date(inq.created_date).toLocaleString() : '—';
+    html += '<div class="inquiry-item">' +
+      '<div class="top-row"><span class="name">' + inq.full_name + '</span>' +
+        '<span class="status ' + statusClass + '">' + (inq.status || 'new') + '</span></div>' +
+      '<div class="meta">Version: <strong>' + (inq.version_of_interest || '').charAt(0).toUpperCase() + (inq.version_of_interest || '').slice(1) + '</strong></div>' +
+      '<div class="meta" style="display:flex;align-items:center;gap:4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;color:var(--slate-light);"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + dateStr + '</div>' +
+      '<div class="msg">' + inq.message + '</div>' +
+      (inq.admin_reply ? '<div class="reply"><div class="label">Our reply:</div>' + inq.admin_reply + '</div>' : '') +
+    '</div>';
+  });
+  html += '</div>';
+  results.innerHTML = html;
+}
+
+/* ============ CLOSE MODALS ON OVERLAY CLICK ============ */
+document.getElementById('inquiryModal').addEventListener('click', function(e) { if (e.target === this) closeInquiry(); });
+document.getElementById('followUpModal').addEventListener('click', function(e) { if (e.target === this) closeFollowUp(); });
+document.getElementById('codePrompt').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+
+/* ============ FOLLOW-UP ENTER KEY ============ */
+document.getElementById('followUpEmail').addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); searchInquiries(); } });
+</script>
+
+</body>
+</html>
